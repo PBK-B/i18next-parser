@@ -9,6 +9,7 @@ export default class HTMLLexer extends BaseLexer {
     this.attr = options.attr || 'data-i18n'
     this.optionAttr = options.optionAttr || 'data-i18n-options'
     this.vueBindAttr = options.vueBindAttr || false
+    this.innerTextDefaultValue = options.innerTextDefaultValue ?? true
   }
 
   extract(content) {
@@ -26,6 +27,20 @@ export default class HTMLLexer extends BaseLexer {
           options = JSON.parse(options)
         } finally {
         }
+      }
+
+      // if defaultValue is not specified in options, the label content will be filled by default
+      // console.log('that.defaultValue', that.defaultValue);
+      // console.log('options.defaultValue', options['defaultValue']);
+      // console.log('node.text()', $node.text());
+      if (
+        (!options || options.defaultValue == undefined) &&
+        that.innerTextDefaultValue &&
+        $node.text()
+      ) {
+        if (!options) options = {}
+        const value = $node.text()
+        options.defaultValue = value
       }
 
       for (let key of keys) {
