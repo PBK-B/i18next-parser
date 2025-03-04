@@ -35,7 +35,7 @@ export default class VueTemplateLexer extends HTMLLexer {
           (item) => item.name.startsWith(':') || item.name.startsWith('v-bind:')
         )
         if (attributes.length > 0) {
-          // there are calculation attributes.
+          // there are computed properties, it may have simple javascript logic
           attributes.forEach((content) => {
             const items = jsLexer.extract(content.value, filename)
             keys.push(...items)
